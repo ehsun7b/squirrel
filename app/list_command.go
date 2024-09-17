@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"squirrel/data"
+	"squirrel/types"
 	"strconv"
 )
 
@@ -13,7 +14,7 @@ var (
 	DefaultLimit               = 10
 )
 
-func ListCommand(p Printer) Command {
+func ListCommand(p types.Printer, d types.Decryptor) Command {
 	return func(args ...string) {
 		order, limit, err := determineOrderAndLimit(args...)
 		if err != nil {
@@ -26,13 +27,13 @@ func ListCommand(p Printer) Command {
 		p("There are {0} entries.\n", count)
 
 		if count > 0 {
-			entries, err := data.Entries(order, limit)
+			entries, err := data.Entries(order, limit, d)
 			if err != nil {
 				p("{red}Error in loading entries!{/red}: {0}\n", err)
 			}
 
 			for i, entry := range entries {
-				p("{0}. {1}: \tID: {2}\n", i+1, entry.Title, entry.Id)
+				p("{0}. {1} \tID: {2} \tUsername: {3}\n", i+1, entry.Title, entry.Id, entry.Username)
 			}
 		}
 	}

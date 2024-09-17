@@ -34,8 +34,10 @@ const (
 
 var commands = map[string]app.Command{
 	"version": app.VersionCommand(l.Println, appName, appVersion),
-	"list":    app.ListCommand(l.Print),
+	"list":    app.ListCommand(l.Print, decryptor),
 	"new":     app.NewCommand(l.Print, encryptor),
+	"delete":  app.DeleteCommand(l.Print),
+	"show":    app.ShowCommand(l.Print, decryptor),
 }
 
 func main() {
@@ -217,6 +219,15 @@ func encryptor(value string) (string, error) {
 	en, err := secure.EncryptAES(value, encryptionKey)
 	if err != nil {
 		l.Println("{red}Encryption failed! {0}{/red}", err)
+		return value, err
+	}
+	return en, nil
+}
+
+func decryptor(value string) (string, error) {
+	en, err := secure.DecryptAES(value, encryptionKey)
+	if err != nil {
+		l.Println("{red}Decryption failed! {0}{/red}", err)
 		return value, err
 	}
 	return en, nil

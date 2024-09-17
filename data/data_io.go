@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"sort"
+	"squirrel/types"
 )
 
 var ErrEntryExists = errors.New("entry with this ID already exists")
@@ -568,9 +569,9 @@ func CountEntries() (int64, error) {
 	return count, nil
 }
 
-func Entries(o Order, limit int) ([]Entry, error) {
+func Entries(o Order, limit int, d types.Decryptor) ([]Entry, error) {
 	// Retrieve all entries
-	allEntries, err := entries()
+	allEntries, err := entries(d)
 	if err != nil {
 		return nil, err
 	}
@@ -585,6 +586,10 @@ func Entries(o Order, limit int) ([]Entry, error) {
 		sort.SliceStable(allEntries, func(i, j int) bool {
 			return allEntries[i].Username < allEntries[j].Username
 		})
+	case ById:
+		sort.SliceStable(allEntries, func(i, j int) bool {
+			return allEntries[i].Id < allEntries[j].Id
+		})
 	default:
 		return nil, fmt.Errorf("unknown order: %v", o)
 	}
@@ -598,7 +603,7 @@ func Entries(o Order, limit int) ([]Entry, error) {
 }
 
 // entries reads and returns all entries from a file
-func entries() ([]Entry, error) {
+func entries(d func(string) (string, error)) ([]Entry, error) {
 	file, err := os.Open(dataFile) // Replace dataFile with your file path
 	if err != nil {
 		return nil, err
@@ -642,6 +647,11 @@ func entries() ([]Entry, error) {
 		}
 
 		// Append the successfully read entry to the list
+		entry.Username, err = d(entry.Username)
+		if err != nil {
+			return nil, err
+		}
+
 		entries = append(entries, entry)
 	}
 

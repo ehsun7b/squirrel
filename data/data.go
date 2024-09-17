@@ -32,6 +32,7 @@ type Order int8
 const (
 	ByTitle Order = iota
 	ByUsername
+	ById
 )
 
 func OrderFromString(status string) (Order, error) {
@@ -40,6 +41,10 @@ func OrderFromString(status string) (Order, error) {
 		return ByTitle, nil
 	case "username":
 		return ByUsername, nil
+	case "id":
+		return ById, nil
+	case "ID":
+		return ById, nil
 	default:
 		return -1, errors.New("invalid Order")
 	}

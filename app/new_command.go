@@ -3,11 +3,10 @@ package app
 import (
 	"fmt"
 	"squirrel/data"
+	"squirrel/types"
 )
 
-var ()
-
-func NewCommand(p Printer, e Encryptor) Command {
+func NewCommand(p types.Printer, e types.Encryptor) Command {
 	return func(args ...string) {
 		var ne data.Entry
 		p("{gray}New entry (all fields except title will be encrypted){/gray}\n")
@@ -37,10 +36,7 @@ func NewCommand(p Printer, e Encryptor) Command {
 		ReadInput("Address", "optional", false, p, &ne.Address)
 		ReadInput("Notes", "optional", false, p, &ne.Notes)
 
-		p("{0}\n", ne)
 		err := encryptEntry(&ne, e, p)
-		p("{0}\n", ne)
-
 		if err != nil {
 			p("{red}Encrypting the new entry failed!{/red}\n", err)
 			return
@@ -71,7 +67,7 @@ func descriptionOfField(desc string) string {
 	}
 }
 
-func encryptEntry(ent *data.Entry, encrypt Encryptor, print Printer) error {
+func encryptEntry(ent *data.Entry, encrypt types.Encryptor, print types.Printer) error {
 	var err error
 
 	ent.Username, err = encrypt(ent.Username)

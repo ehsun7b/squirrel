@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"squirrel/types"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -11,12 +13,12 @@ import (
 	"golang.org/x/term"
 )
 
-func ReadInput[T any](name string, desc string, mandatory bool, p Printer, t *T) {
+func ReadInput[T any](name string, desc string, mandatory bool, p types.Printer, t *T) {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
 		description := descriptionOfField(desc)
-		p("{0} {1}: ", name, description)
+		p("{0}{1}: ", name, description)
 
 		if scanner.Scan() {
 			input := scanner.Text()
@@ -25,9 +27,24 @@ func ReadInput[T any](name string, desc string, mandatory bool, p Printer, t *T)
 				continue
 			}
 
-			if str, ok := any(t).(*string); ok {
-				*str = input
-			} else {
+			switch v := any(t).(type) {
+			case *string:
+				*v = input
+			case *int:
+				num, err := strconv.Atoi(input)
+				if err != nil {
+					p("{red}Invalid input for {0}: {1}{/red}\n", name, err)
+					continue
+				}
+				*v = num
+			case *int64:
+				num, err := strconv.ParseInt(input, 10, 64)
+				if err != nil {
+					p("{red}Invalid input for {0}: {1}{/red}\n", name, err)
+					continue
+				}
+				*v = num
+			default:
 				p("{red}Unsupported type!{/red}\n")
 				continue
 			}
@@ -40,7 +57,7 @@ func ReadInput[T any](name string, desc string, mandatory bool, p Printer, t *T)
 	}
 }
 
-func ReadSecret(name string, desc string, mandatory bool, p Printer, t *string) {
+func ReadSecret(name string, desc string, mandatory bool, p types.Printer, t *string) {
 	for {
 		description := descriptionOfField(desc)
 		p("{0} {1}: ", name, description)
@@ -61,7 +78,7 @@ func ReadSecret(name string, desc string, mandatory bool, p Printer, t *string) 
 	}
 }
 
-func PrintSecret(p Printer, secret string, seconds int) {
+func PrintSecret(p types.Printer, secret string, seconds int) {
 	p("{gray}Your chosen master password: {0}{/gray}\n", secret)
 
 	time.Sleep(time.Duration(seconds) * time.Second)
@@ -70,7 +87,7 @@ func PrintSecret(p Printer, secret string, seconds int) {
 	clearLine()
 }
 
-func GetYesNoInput(p Printer, prompt string) bool {
+func GetYesNoInput(p types.Printer, prompt string) bool {
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
