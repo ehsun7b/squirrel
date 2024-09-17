@@ -137,7 +137,6 @@ func signInOrInitialize() ([]byte, error) {
 
 		key := secure.DeriveKeyPBKDF2(password, salt)
 		e, err := secure.EncryptAES("squirrel", key)
-		l.Println("{0}", e)
 		if err != nil {
 			l.Println("{red}Can't encrypt sample text with given password!{/red} {0}", e)
 			os.Exit(1)
