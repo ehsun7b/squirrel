@@ -4,9 +4,9 @@ Squirrel is a command-line tool for securely managing passwords and sensitive in
 
 ## ⚠️ Important Security Note ⚠️
 
-<p style="color: green;">
-Squirrel does not connect to the internet for updates, telemetry, or any external communication. This means your passwords are extremely safe as long as your system is secure. You can freely block Squirrel's access to the internet without affecting its functionality.
-</p>
+**Squirrel does not connect to the internet for updates, telemetry, or any external communication.**  
+This means your passwords are extremely safe as long as your system is secure.  
+You can freely block Squirrel's access to the internet without affecting its functionality.
 
 ## Features
 
