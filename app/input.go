@@ -60,7 +60,7 @@ func ReadInput[T any](name string, desc string, mandatory bool, p types.Printer,
 func ReadSecret(name string, desc string, mandatory bool, p types.Printer, t *string) {
 	for {
 		description := descriptionOfField(desc)
-		p("{0} {1}: ", name, description)
+		p("{0}{1}: ", name, description)
 
 		password, err := readPasswordWithMask()
 		if err != nil {
@@ -92,7 +92,7 @@ func GetYesNoInput(p types.Printer, prompt string) bool {
 
 	for {
 		// Print the prompt
-		p("{0} (y/n): ", prompt)
+		p(prompt + " (y/n): ")
 
 		// Read the input
 		input, err := reader.ReadString('\n')

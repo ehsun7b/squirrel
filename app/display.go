@@ -16,10 +16,10 @@ func format(entry data.Entry) string {
 		name  string
 		value string
 	}{
-		{"Id", fmt.Sprintf("%d", entry.Id)},
+		{"ID", fmt.Sprintf("%d", entry.Id)},
 		{"Title", entry.Title},
 		{"Username", entry.Username},
-		{"Password", "{gray}" + entry.Password + "{/gray}"},
+		{"Password", "{gray}{bgWhite}" + entry.Password + "{/gray}{/bgWhite}"},
 		{"Address", entry.Address},
 		{"Notes", entry.Notes},
 	}

@@ -34,13 +34,29 @@ const (
 
 var commands = map[string]app.Command{
 	"version": app.VersionCommand(l.Println, appName, appVersion),
-	"list":    app.ListCommand(l.Print, decryptor),
-	"new":     app.NewCommand(l.Print, encryptor),
-	"delete":  app.DeleteCommand(l.Print),
-	"show":    app.ShowCommand(l.Print, decryptor),
+
+	"list": app.ListCommand(l.Print, decryptor),
+	"ls":   app.ListCommand(l.Print, decryptor),
+
+	"new":    app.NewCommand(l.Print, encryptor),
+	"add":    app.NewCommand(l.Print, encryptor),
+	"create": app.NewCommand(l.Print, encryptor),
+
+	"delete": app.DeleteCommand(l.Print),
+	"del":    app.DeleteCommand(l.Print),
+	"remove": app.DeleteCommand(l.Print),
+
+	"show": app.ShowCommand(l.Print, decryptor),
+
+	"search": app.SearchCommand(l.Print, decryptor),
+
+	"edit": app.EditCommand(l.Print, encryptor, decryptor),
+
+	"help": app.HelpCommand(l.Print),
 }
 
 func main() {
+	app.Logo()
 	l.Println("{brightWhite}{0} v{1}{/brightWhite}", appName, appVersion)
 	printLow("Loading...\n")
 
@@ -199,7 +215,7 @@ func processInput(input string) {
 		command(parts[1:]...)
 	} else {
 		command := strings.Split(input, " ")[0]
-		l.Println("No command {magenta}{0}{/magenta}", command)
+		l.Println("No {magenta}{0}{/magenta} command.Type {green}help{/green} for available commands.", command)
 	}
 
 }
