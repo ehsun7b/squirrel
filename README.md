@@ -2,6 +2,12 @@
 
 Squirrel is a command-line tool for securely managing passwords and sensitive information. It is designed for tech-savvy users and individuals who want full control over their data without relying on cloud services. **All data is encrypted locally using AES encryption with a key derived from the user's master password.** This means that your passwords are only as secure as your master password, and **if the master password is lost, all data will be irretrievable**. Squirrel ensures maximum security by keeping everything stored and encrypted on your local machine.
 
+## ⚠️ Important Security Note ⚠️
+
+<p style="color: green;">
+Squirrel does not connect to the internet for updates, telemetry, or any external communication. This means your passwords are extremely safe as long as your system is secure. You can freely block Squirrel's access to the internet without affecting its functionality.
+</p>
+
 ## Features
 
 - AES encryption to protect sensitive information
