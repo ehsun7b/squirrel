@@ -41,10 +41,16 @@ Ensure you have Go installed. If not, you can download and install it from [Go's
    go build -o squirrel
    ```
 
-4. Move the binary to a directory in your `PATH` (optional):
+   Or
 
    ```bash
-   sudo mv squirrel /usr/local/bin/
+   ./build.sh
+   ```
+
+4. Move the binary to your desired directory:
+
+   ```bash
+   sudo mv squirrel /usr/desired/path/
    ```
 
 ## Usage
@@ -52,7 +58,7 @@ Ensure you have Go installed. If not, you can download and install it from [Go's
 To start using Squirrel, run the following command in your terminal:
 
 ```bash
-squirrel
+./squirrel
 ```
 
 You will be prompted to create a master password. **Ensure you remember this password as it will be required to encrypt and decrypt your stored data. If lost, your data cannot be recovered.**
